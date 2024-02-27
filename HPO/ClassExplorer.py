@@ -56,10 +56,14 @@ def ClassyNot(class1, dictionary, dataframe):
     for i in dataframe['name']:
         name.append(i)
     return(dataframe)
+
+def Dictify(df):
+    df.set_index('name')['value'].to_dict()
     
 
-
 classynames = pd.read_csv('human.phenotype.ontology.embeddings.csv')
+
+
 classynames_dict = classynames.set_index('name')['value'].to_dict()    
 
 
@@ -67,5 +71,6 @@ query1 = ClassyNot('MA:0000538',classynames_dict,classynames)
 query2 = ClassyOr('chew','http://purl.obolibrary.org/obo/UBERON_0004727',classynames_dict,classynames)
 query3 = ClassyAnd('pedal','abnormality',classynames_dict,classynames)
 
-print(query1)
-
+query4 = ClassyAnd(query1['name'][0],query2['name'][0],query1.set_index('name')['value'].to_dict(),query1)
+print(query4)
+print(query2)
